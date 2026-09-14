@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #0b0b0f;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding-bottom: 90px;
+}
+
+header {
+    padding: 22px 18px 12px;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    color: #8e8e98;
+    margin-top: 5px;
+}
+
+.search {
+    margin: 15px 18px;
+}
+
+.search input {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    background: #19191f;
+    color: white;
+    font-size: 15px;
+}
+
+.section {
+    padding: 10px 18px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.section-title h2 {
+    font-size: 19px;
+}
+
+.playlists {
+    display: flex;
+    gap: 13px;
+    overflow-x: auto;
+}
+
+.playlist {
+    min-width: 145px;
+    background: #17171d;
+    border-radius: 16px;
+    padding: 10px;
+}
+
+.cover {
+    width: 125px;
+    height: 125px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.playlist h3 {
+    font-size: 14px;
+    margin-top: 9px;
+}
+
+.playlist p {
+    color: #888891;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.songs {
+    margin-top: 5px;
+}
+
+.song {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+}
+
+.song img {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.song-info {
+    flex: 1;
+}
+
+.song-info h3 {
+    font-size: 15px;
+}
+
+.song-info p {
+    color: #888891;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.play {
+    background: white;
+    color: black;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    font-size: 16px;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background: #121217;
+    border-top: 1px solid #24242b;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bottom button {
+    background: none;
+    border: none;
+    color: #888891;
+    font-size: 12px;
+}
+
+.bottom button.active {
+    color: white;
+}
+
+#player {
+    display: none;
+    position: fixed;
+    bottom: 72px;
+    left: 10px;
+    right: 10px;
+    background: #202027;
+    padding: 12px;
+    border-radius: 15px;
+}
+
+#player h3 {
+    font-size: 14px;
+}
+
+#player p {
+    color: #999;
+    font-size: 12px;
+    margin-top: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎧 Music</h1>
+    <p>Kayfiyatingga mos musiqa top</p>
+</header>
+
+<div class="search">
+    <input id="search" type="text" placeholder="🔎 Qo‘shiq yoki artist qidirish...">
+</div>
+
+<section class="section">
+    <div class="section-title">
+        <h2>🔥 Playlistlar</h2>
+    </div>
+
+    <div class="playlists">
+
+        <div class="playlist">
+            <img class="cover"
+                 src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500">
+            <h3>Night Vibes</h3>
+            <p>🌙 Kechki musiqa</p>
+        </div>
+
+        <div class="playlist">
+            <img class="cover"
+                 src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500">
+            <h3>Energy</h3>
+            <p>⚡ Kuchli vibe</p>
+        </div>
+
+        <div class="playlist">
+            <img class="cover"
+                 src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500">
+            <h3>Chill</h3>
+            <p>🌌 Relax</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+
+    <div class="section-title">
+        <h2>🎵 Qo‘shiqlar</h2>
+    </div>
+
+    <div class="songs" id="songs">
+
+        <div class="song" data-name="Night Drive">
+            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300">
+
+            <div class="song-info">
+                <h3>Night Drive</h3>
+                <p>Midnight Artist</p>
+            </div>
+
+            <button class="play"
+                    onclick="playSong('Night Drive','Midnight Artist')">
+                ▶
+            </button>
+        </div>
+
+        <div class="song" data-name="Lost Again">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300">
+
+            <div class="song-info">
+                <h3>Lost Again</h3>
+                <p>Dark Vibes</p>
+            </div>
+
+            <button class="play"
+                    onclick="playSong('Lost Again','Dark Vibes')">
+                ▶
+            </button>
+        </div>
+
+        <div class="song" data-name="After Midnight">
+            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300">
+
+            <div class="song-info">
+                <h3>After Midnight</h3>
+                <p>Unknown Artist</p>
+            </div>
+
+            <button class="play"
+                    onclick="playSong('After Midnight','Unknown Artist')">
+                ▶
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<div id="player">
+    <h3 id="playerTitle">Song</h3>
+    <p id="playerArtist">Artist</p>
+</div>
+
+<nav class="bottom">
+    <button class="active">🏠<br>Home</button>
+    <button>🔎<br>Search</button>
+    <button>❤️<br>Favorites</button>
+    <button>👤<br>Profile</button>
+</nav>
+
+<script>
+
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+tg.expand();
+
+function playSong(title, artist) {
+
+    document.getElementById("player").style.display = "block";
+
+    document.getElementById("playerTitle").innerText = "▶ " + title;
+    document.getElementById("playerArtist").innerText = artist;
+
+    tg.HapticFeedback.impactOccurred("light");
+}
+
+document.getElementById("search").addEventListener("input", function() {
+
+    const value = this.value.toLowerCase();
+
+    document.querySelectorAll(".song").forEach(song => {
+
+        const name = song.dataset.name.toLowerCase();
+
+        if (name.includes(value)) {
+            song.style.display = "flex";
+        } else {
+            song.style.display = "none";
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
